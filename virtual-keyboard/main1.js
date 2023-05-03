@@ -51,13 +51,13 @@ function _createKeys(keyLayout) {
     const fragment = document.createDocumentFragment();
 
       
-      const keyLayoutNew = [
-        "Backquote","Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0","Minus","Equal", "Backspace",
-        "tab","q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-        "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
-        "done", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
-        "space"
-      ];
+    //   const keyLayoutNew = [
+    //     "Backquote","Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0","Minus","Equal", "Backspace",
+    //     "tab","q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
+    //     "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
+    //     "done", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
+    //     "space"
+    //   ];
   
       
       keyLayout.forEach(key => {
@@ -284,7 +284,7 @@ document.addEventListener('keydown', function(e) {
 
 
   document.addEventListener('keydown', function keydown(evt){
-    if (!evt) evt = e;
+    // if (!evt) evt = e;
     
     if (evt.ctrlKey && evt.altKey){
 
