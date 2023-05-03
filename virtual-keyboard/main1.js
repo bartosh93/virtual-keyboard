@@ -2,6 +2,10 @@ let body = document.querySelector('body');
 let container = document.createElement("div");
 container.classList.add("container");
 
+let langText = document.createElement("p");
+langText.classList.add("langtext");
+langText.innerHTML = "Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: левыe ctrl + alt"
+
 
 let textArea = document.createElement("textarea");
 textArea.classList.add("use-keyboard-input");
@@ -18,6 +22,7 @@ keysContainer.classList.add("keyboard__keys");
 main.appendChild(keysContainer);
 container.appendChild(textArea);
 container.appendChild(main);
+container.appendChild(langText);
 
 body.appendChild(container);
 
@@ -37,9 +42,11 @@ const keyLayoutSetEn = [
     "lctrl","win","lalt","space","ralt","arrowleft","arrowdown","arrowright","rctrl"
   ];
 
+//   let keyLayout = keyLayoutSetEn;
   keysContainer.appendChild(_createKeys(keyLayoutSetEn));
 
 let value = "";
+let langFlag = true;
 function _createKeys(keyLayout) {
     const fragment = document.createDocumentFragment();
 
@@ -56,6 +63,8 @@ function _createKeys(keyLayout) {
       keyLayout.forEach(key => {
         const keyElement = document.createElement("button");
         const insertLineBreak = ["backspace", "del", "enter","rshift", "?"].indexOf(key) !== -1;
+  
+        // Add attributes/classes
         keyElement.setAttribute("type", "button");
         keyElement.classList.add("keyboard__key");
   
@@ -64,14 +73,24 @@ function _createKeys(keyLayout) {
                 keyElement.setAttribute("data-code", "Backspace");
                 keyElement.classList.add("keyboard__key--wide");
                 keyElement.innerHTML = "Backspace";
-
+                // createIconHTML("backspace");
+  
+                // keyElement.addEventListener("click", () => {
+                // this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+                // this._triggerEvent("oninput");
+                // });
   
             break;
 
             case "tab":
                 keyElement.classList.add("keyboard__key--half-wide");
                 keyElement.innerHTML = "Tab";
-
+                // createIconHTML("backspace");
+          
+                // keyElement.addEventListener("click", () => {
+                //   this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+                //   this._triggerEvent("oninput");
+                // });
           
             break;  
             
@@ -85,7 +104,12 @@ function _createKeys(keyLayout) {
             case "caps":
                 keyElement.classList.add("keyboard__key--wide");
                 keyElement.innerHTML = "CapsLock";
-
+                // createIconHTML("keyboard_capslock");
+  
+                // keyElement.addEventListener("click", () => {
+                // this._toggleCapsLock();
+                // keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
+                // });
   
             break;
   
@@ -93,7 +117,12 @@ function _createKeys(keyLayout) {
                 keyElement.setAttribute("data-code", "Enter");
                 keyElement.classList.add("keyboard__key--wide");
                 keyElement.innerHTML = "Enter";
-
+                // createIconHTML("keyboard_return");
+  
+                // keyElement.addEventListener("click", () => {
+                // this.properties.value += "\n";
+                // this._triggerEvent("oninput");
+                // });
   
             break;
             
@@ -140,7 +169,12 @@ function _createKeys(keyLayout) {
             case "space":
                 keyElement.setAttribute("data-code", "Space");
                 keyElement.classList.add("keyboard__key--extra-wide");
-
+                // keyElement.innerHTML = createIconHTML("space_bar");
+  
+                // keyElement.addEventListener("click", () => {
+                // this.properties.value += " ";
+                // this._triggerEvent("oninput");
+                // });
   
             break;
 
@@ -179,7 +213,14 @@ function _createKeys(keyLayout) {
             default:
                 keyElement.textContent = key.toLowerCase();
             
-
+                keyElement.addEventListener("click", () => {
+                    // value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                //   this._triggerEvent("oninput");
+                value = value + key;
+                textArea.value = value;
+                console.log(key)
+                console.log(value)
+                });
   
             break;
         }
@@ -190,34 +231,73 @@ function _createKeys(keyLayout) {
           fragment.appendChild(document.createElement("br"));
         }
       });
-  
+      
+      
+
+
+
       return fragment;
 }
 
 
-let allKeys = document.querySelectorAll('.keyboard__key')
+
+
+
+
 document.addEventListener('keydown', function(e) {
+    let allKeys = document.querySelectorAll('.keyboard__key');
     allKeys.forEach(el => {
         if (e.code==el.getAttribute("data-code")||e.key.toLowerCase()==el.textContent) {
             el.classList.add("keyboard__key_act");
         }
-    })
+    });
   });
 
+
+//   document.addEventListener('keydown', function(e) {
+//     let newKeys = document.querySelectorAll('.keyboard__key')
+//     newKeys.forEach(el => {
+        
+//         if (el.classList.contains("keyboard__key_act")) {
+//             console.log('s')
+//             value = value + el.textContent;
+//             textArea.value = value;
+//         }
+        
+//     });
+//   });
+
+
   document.addEventListener('keyup', function(e) {
+    let allKeys = document.querySelectorAll('.keyboard__key');
     allKeys.forEach(el => {
         if (e.code==el.getAttribute("data-code")||e.key.toLowerCase()==el.textContent) {
             el.classList.remove("keyboard__key_act");
         }
     })
   });
+  
+
+
+
+
+
 
   document.addEventListener('keydown', function keydown(evt){
     if (!evt) evt = e;
     
     if (evt.ctrlKey && evt.altKey){
-        
 
-      
+        if (langFlag) {
+            langFlag = false;
+            keysContainer.innerHTML = "";
+            keysContainer.append(_createKeys(keyLayoutSetRu));
+            
+        } else {
+            langFlag = true;
+            keysContainer.innerHTML = "";
+            keysContainer.append(_createKeys(keyLayoutSetEn));
+           
+        }
     }
 });
